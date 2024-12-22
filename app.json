@@ -2,7 +2,8 @@
   "expo": {
     "name": "KanikaMam",
     "slug": "KanikaMam",
-    "version": "1.0.0"
+    "version": "1.0.0",
+    "newArchEnabled": true
   },
   "name": "KanikaMam"
 }

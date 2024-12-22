@@ -118,22 +118,21 @@ const styles = StyleSheet.create({
         left: 0,
         right: 0,
         zIndex: 100,
-        paddingVertical: 35,
+        paddingVertical: 30,
         borderBottomLeftRadius: 30,
         borderBottomRightRadius: 30,
-        backgroundColor: '#2c3e50', // Dark shade for header
-        alignItems: 'center',
-        shadowColor: '#2c3e50',
-        shadowOffset: { width: 0, height: 6 },
+        shadowColor: '#000',
+        shadowOffset: { width: 0, height: 4 },
         shadowOpacity: 0.3,
         shadowRadius: 8,
-        elevation: 4,
-    },
-    headerContent: {
-        color: 'white',  // White text for visibility on dark background
-        fontSize: 20,
+        elevation: 6,
+        alignItems: 'center',
+      },
+      headerContent: {
+        color: 'white',
+        fontSize: 24,
         fontWeight: 'bold',
-    },
+      },
     label: {
         fontSize: 16,
         color: '#555',

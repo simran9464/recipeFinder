@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
-import { View, Text, FlatList, Image, Alert, TouchableOpacity, StyleSheet } from 'react-native';
+import { View, Text, FlatList, Image, Alert, TouchableOpacity, StyleSheet, ImageBackground } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-
+import { LinearGradient } from 'expo-linear-gradient';
 const UploadedRecipesScreen = () => {
     const [recipes, setRecipes] = useState([]);
 
@@ -33,8 +33,17 @@ const UploadedRecipesScreen = () => {
     };
 
     return (
-        <View style={styles.container}>
-            <Text style={styles.title}>Uploaded Recipes</Text>
+        // Using ImageBackground with an overlay for darkening effect
+        <ImageBackground
+        source={require("../../assets/images/plate.jpg")}  
+            style={styles.container}
+        >
+            {/* Semi-transparent black overlay */}
+            <View style={styles.overlay}></View>
+
+            <LinearGradient colors={['#f96163', '#ff8364']} style={styles.header}>
+      <Text style={styles. headerContent}>My Recipes</Text>
+      </LinearGradient>
             <FlatList
                 data={recipes}
                 keyExtractor={(item, index) => index.toString()}
@@ -55,7 +64,7 @@ const UploadedRecipesScreen = () => {
                     </View>
                 )}
             />
-        </View>
+        </ImageBackground>
     );
 };
 
@@ -63,55 +72,98 @@ const styles = StyleSheet.create({
     container: {
         flex: 1,
         padding: 20,
-        backgroundColor: '#f2f2f2',
+        paddingTop:120,
+        justifyContent: 'flex-start', 
+    },
+    overlay: {
+        ...StyleSheet.absoluteFillObject,
+        backgroundColor: 'rgba(0, 0, 0, 0.4)', 
     },
     title: {
-        fontSize: 24,
-        fontWeight: 'bold',
-        color: '#333',
+        fontSize: 34, 
+        fontWeight: 'bold', 
+        color: '#ffffff', 
         textAlign: 'center',
-        marginBottom: 20,
+        marginBottom: 30,
+        fontFamily: 'Roboto', 
+        textShadowColor: '#000', 
+        textShadowOffset: { width: 1, height: 1 }, 
+        textShadowRadius: 5, 
+        letterSpacing: 1, 
+        zIndex: 2, 
     },
+    
     recipeCard: {
-        backgroundColor: '#fff',
-        padding: 15,
-        borderRadius: 10,
-        marginBottom: 15,
+        backgroundColor: 'rgba(255, 255, 255, 0.8)', 
+        padding: 20,
+        borderRadius: 15,
+        marginBottom: 20,
         shadowColor: '#000',
+        shadowOffset: { width: 0, height: 10 },
         shadowOpacity: 0.1,
         shadowRadius: 10,
-        elevation: 5,
+        elevation: 8,
+        backgroundColor: '#ffffff',
+        borderWidth: 1,
+        borderColor: '#e2e2e2',
+        overflow: 'hidden',
     },
     recipeName: {
-        fontSize: 18,
-        fontWeight: 'bold',
+        fontSize: 20,
+        fontWeight: '600',
         color: '#4CAF50',
         marginBottom: 10,
+        fontFamily: 'Roboto',
     },
     recipeImage: {
         width: '100%',
-        height: 150,
-        borderRadius: 8,
+        height: 200,
+        borderRadius: 10,
         marginTop: 10,
+        marginBottom: 15,
     },
     recipeDetails: {
-        fontSize: 15,
-        color: '#666',
+        fontSize: 16,
+        color: '#7f8c8d',
         marginTop: 5,
-        lineHeight: 20,
+        lineHeight: 22,
+        fontFamily: 'Roboto',
     },
     deleteButton: {
         marginTop: 15,
-        paddingVertical: 10,
+        paddingVertical: 12,
         backgroundColor: '#FF6347',
-        borderRadius: 8,
+        borderRadius: 12,
         alignItems: 'center',
+        elevation: 5,
     },
     deleteButtonText: {
         color: '#fff',
-        fontWeight: 'bold',
+        fontWeight: '600',
         fontSize: 16,
+        textTransform: 'uppercase',
     },
+    header: {
+        position: 'absolute',
+        top: 0,
+        left: 0,
+        right: 0,
+        zIndex: 100,
+        paddingVertical: 30,
+        borderBottomLeftRadius: 30,
+        borderBottomRightRadius: 30,
+        shadowColor: '#000',
+        shadowOffset: { width: 0, height: 4 },
+        shadowOpacity: 0.3,
+        shadowRadius: 8,
+        elevation: 6,
+        alignItems: 'center',
+      },
+      headerContent: {
+        color: 'white',
+        fontSize: 24,
+        fontWeight: 'bold',
+      },
 });
 
 export default UploadedRecipesScreen;

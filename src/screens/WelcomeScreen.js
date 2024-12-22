@@ -7,12 +7,12 @@ export default function WelcomeScreen() {
     
     return (
         <ImageBackground
-            source={require("../../assets/images/plate.jpg")} // Background image
+            source={require("../../assets/images/plate.jpg")}
             style={styles.container}
         >
             <View style={styles.overlay} />
             <Image 
-                source={require("../../assets/images/main.png")} // Central image
+                source={require("../../assets/images/main.png")} 
                 style={styles.centralImage}
             />
             <Text style={styles.premiumText}>40K+ Premium Recipes</Text>
@@ -33,10 +33,10 @@ const styles = StyleSheet.create({
     },
     overlay: {
         ...StyleSheet.absoluteFillObject,
-        backgroundColor: 'rgba(0, 0, 0, 0.6)', // Blackish background with opacity
+        backgroundColor: 'rgba(0, 0, 0, 0.6)', 
     },
     centralImage: {
-        width: 300, // Adjusted for responsiveness
+        width: 300, 
         height: 300,
         resizeMode: 'contain',
         marginBottom: 20,
@@ -51,8 +51,8 @@ const styles = StyleSheet.create({
         paddingVertical: 12,
         textAlign: 'center',
         paddingHorizontal: 20,
-        backgroundColor: 'rgba(255, 255, 255, 0.7)', // Light background for better text readability
-        borderRadius: 10, // Rounded corners
+        backgroundColor: 'rgba(255, 255, 255, 0.7)',
+        borderRadius: 10, 
     },
     titleText: {
         borderWidth: 1,
@@ -63,8 +63,8 @@ const styles = StyleSheet.create({
         textAlign: 'center',
         marginBottom: 30,
         paddingHorizontal: 20,
-        backgroundColor: 'rgba(255, 255, 255, 0.7)', // Light background for better text readability
-        borderRadius: 10, // Rounded corners
+        backgroundColor: 'rgba(255, 255, 255, 0.7)', 
+        borderRadius: 10, 
     },
     button: {
         backgroundColor: '#f96163',

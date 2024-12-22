@@ -1,6 +1,6 @@
 import { StatusBar } from 'expo-status-bar';
 import React, { useEffect, useState } from 'react';
-import { View, Text, StyleSheet, Button, ScrollView, TouchableOpacity, Share } from 'react-native';
+import { View, Text,TextInput, StyleSheet, Button, ScrollView, TouchableOpacity, Share } from 'react-native';
 import { CachedImage } from '../../utils/index';
 import { useNavigation } from '@react-navigation/native';
 import { ChevronLeftIcon } from "react-native-heroicons/outline";
@@ -19,8 +19,20 @@ export default function RecipeDetails(props) {
   const [isLoading, setisLoading] = useState(true);
   const [isFavourite, setFavourite] = useState(false);
   const [isPlaying, setIsPlaying] = useState(false);
-
-
+  const [isEditing, setIsEditing] = useState(false); // New state to manage editing mode
+  const [editableInstructions, setEditableInstructions] = useState(''); // New state to hold editable instructions
+  const saveInstructions = async () => {
+    if (editableInstructions.trim()) {
+      // Update the meal's instructions and save to AsyncStorage
+      setMeal((prevMeal) => ({ ...prevMeal, strInstructions: editableInstructions }));
+      await AsyncStorage.setItem(`instructions_${meal.idMeal}`, editableInstructions); // Save to AsyncStorage with meal ID
+      setIsEditing(false);
+    }
+  };
+  const startEditing = () => {
+    setEditableInstructions(meal.strInstructions); 
+    setIsEditing(true); 
+  };
   const shareRecipe = async() =>{
     if(!meal)return;
     const ingredients =ingredientsIndexes(meal)
@@ -186,7 +198,7 @@ const saveToFavorites = async (recipe) => {
       </View>
 
       {isLoading ? (
-        <Loading size="large" />
+        <Loading size={100} />
       ) : (
         <View style={styles.contentContainer}>
           <Text style={styles.title}>{meal?.strMeal}</Text>
@@ -205,9 +217,26 @@ const saveToFavorites = async (recipe) => {
           <View style={styles.instructionsContainer}>
             <Text style={styles.sectionTitle}>Instructions</Text>
             <Button title={isPlaying ? "Pause Instructions" : "Listen to Instructions"} onPress={toggleInstructions} />
-            <Text style={styles.instructionsText}>{meal?.strInstructions}</Text>
-            
-            {/* <Button title="Share Recipe"  onPress={shareRecipe}/> */}
+            <TouchableOpacity onPress={startEditing}>
+                  <Text style={styles.editText}>Edit</Text>
+                </TouchableOpacity>
+            {isEditing ? (
+              <View>
+                <TextInput
+                  style={styles.instructionsTextInput}
+                  value={editableInstructions}
+                  onChangeText={setEditableInstructions}
+                  multiline
+                  numberOfLines={4}
+                />
+                <Button title="Save Instructions" onPress={saveInstructions} />
+              </View>
+            ) : (
+              <View>
+                <Text style={styles.instructionsText}>{meal?.strInstructions}</Text>
+                
+              </View>
+            )}
           </View>
         </View>
       )}
@@ -216,6 +245,21 @@ const saveToFavorites = async (recipe) => {
 }
 
 const styles = StyleSheet.create({
+  instructionsTextInput: {
+    borderColor: '#ccc',
+    borderWidth: 1,
+    borderRadius: 5,
+    padding: 10,
+    fontSize: 16,
+    color: '#333',
+    marginBottom: 10,
+  },
+  editText: {
+    fontSize: 16,
+    color: '#f64e32',
+    textDecorationLine: 'underline',
+    marginTop:12
+  },
   scrollContainer: { paddingBottom: 30 },
   imageContainer: { position: 'relative', width: '100%', height: heightPercentageToDP(45) },
   image: { width: '100%', height: '100%', borderRadius: 10 },
@@ -231,7 +275,33 @@ const styles = StyleSheet.create({
   ingredientRow: { flexDirection: 'row', alignItems: 'center', paddingVertical: 5, borderBottomWidth: 1, borderBottomColor: '#eee' },
   ingredientBullet: { height: heightPercentageToDP(1.5), width: heightPercentageToDP(1.5), backgroundColor: '#f64e32', borderRadius: 50, marginRight: 8 },
   ingredientText: { fontSize: heightPercentageToDP(1.7), color: '#333' },
-  instructionsContainer: { paddingHorizontal: 16, paddingTop: 16, backgroundColor: '#f9f9f9', borderRadius: 10, paddingVertical: 10 },
+  instructionsContainer: {
+    paddingHorizontal: 16,
+    paddingTop: 20,
+    backgroundColor: '#ffffff',  // Lighter background for modern feel
+    borderRadius: 12,  // Slightly more rounded corners
+    paddingVertical: 20,
+    shadowColor: '#000',  // Shadow for depth
+    shadowOffset: { width: 0, height: 4 },
+    shadowOpacity: 0.1,
+    shadowRadius: 6,
+    elevation: 5, // For Android shadow support
+    marginBottom: 20, // Space from other elements
+    borderWidth: 1, // Adding a border for more definition
+    borderColor: '#e0e0e0', // Light grey border color
+  },
+  
+  
+
+  instructionsText: {
+    fontSize: heightPercentageToDP(2), // Adjusted font size for readability
+    marginTop: 10,
+    color: '#333', // Darker text for contrast
+    lineHeight: 24, // More space between lines for better readability
+    fontFamily: 'Roboto', // Use a modern, clean font family
+    fontWeight: '500', // Medium weight for subtle emphasis
+  },
+  // instructionsContainer: { paddingHorizontal: 16, paddingTop: 16, backgroundColor: '#f9f9f9', borderRadius: 10, paddingVertical: 10 },
   shareBtn:{position:'absolute',right:20,top:60,backgroundColor:'white',borderRadius:50,padding:12},
-  instructionsText: { fontSize: heightPercentageToDP(1.8), marginTop: 8, color: '#333' },
+  // instructionsText: { fontSize: heightPercentageToDP(1.8), marginTop: 8, color: '#333' },
 });
